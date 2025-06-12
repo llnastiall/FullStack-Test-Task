@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: '${TYPEORM_USERNAME}'
+      POSTGRES_PASSWORD: '${TYPEORM_PASSWORD}'
+      POSTGRES_DB: '${TYPEORM_DATABASE}'
+    ports:
+      - '${TYPEORM_PORT}:5432'
+    env_file:
+      - .env
+    networks:
+      - genesis-network
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - '${API_PORT}:3000'
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    restart: on-failure
+    networks:
+      - genesis-network
+
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - '${FRONT_PORT}:80'
+    depends_on:
+      - api
+    restart: on-failure
+    networks:
+      - genesis-network
+
+networks:
+  genesis-network:
+    driver: bridge
