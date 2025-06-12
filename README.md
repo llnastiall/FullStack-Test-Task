@@ -1,8 +1,5 @@
 ## Project setup
 
-```bash
-$ npm install
-```
 ## Create .env file with these variables
 ```bash
 API_PORT=3000
@@ -24,3 +21,5 @@ JWT_REFRESH_EXPIRES_IN=28d
 ```bash
 $ docker compose up --build
 ```
+
+and go to http://localhost:3001/
